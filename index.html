@@ -1,0 +1,56 @@
+<!doctype html>
+<html ng-app="app">
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
+    <link rel="stylesheet" href="http://bootstrapdocs.com/v3.1.1/docs/dist/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="style.css" type="text/css">
+  </head>
+  <body>
+    <div ng-controller="MainCtrl">
+      <div class="col-xs-12">
+        <input type="text" name="search" placeholder="search" ng-model="searchItem" ng-enter="jumpSearch()" ng-change="searchItems()">
+      </div>
+      <div class="col-xs-12 table-height" id="main-columns" class="main-columns">
+        <div class="row">
+          <div class="col-xs-12" id="search-heading">
+            <div ng-repeat="heading in headings" ng-style="{'width': heading.width + '%'}" class="display-inline">
+              <div class="col-xs-12 reduce-padding" ng-click="sortBy(heading)">
+                {{heading.alias}}
+              </div>
+              <div class="col-xs-12 reduce-padding">
+                <input type="text" name="filter" ng-model="searchFilter" ng-change="searchHeading(heading.name, searchFilter)">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Traverse each object in array -->
+        <div class="row" ng-repeat="item in sample | orderBy:propertyName:reverse">
+          <div class="col-xs-12" id="{{prefix + item.searchid}}">
+            <!-- Traverse each key in object in array -->
+            <div ng-repeat="key in item" ng-dblclick="doubleClick(key)" ng-click="singleClick(item)" ng-style="{'width': headings[$index].width + '%'}" class="display-inline" ng-class="{'highlight': item.selected === 'selected', 'no-highlight': item.selected == 'not selected', 'search-highlight': item.searched ===  'searched', 'no-highlight': item.searched === 'not searched', 'no-filter': item.filtered === 'hidden'}" ng-if="$index < sampleHeadings - 4">
+              {{key}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <br>
+        Sort Column: {{sortColumnOutput}}
+        <br>
+        Single Click: {{singleClickOutput}}
+        <br>
+        Double Click: {{doubleClickOutput}}
+        <br>
+        Search Heading: {{searchHeadingOutput}}
+      </div>
+    </div>
+    
+    <script src="app.js"></script>
+  </body>
+</html>
+
+
+
